@@ -1,6 +1,5 @@
 package Simulations;
 
-import storageContract.administration.CustomerImpl;
 import storageContract.administration.CustomerManager;
 import storageContract.administration.StorageManager;
 import storageContract.cargo.Cargo;
@@ -9,35 +8,82 @@ import storageContract.cargo.CargoImpl;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Producer extends Thread{
+    private Object waitMonitor;
+    private Object producerMonitor;
+    private Object consumerMoniter;
+
+    static volatile int counter;
     private StorageManager manager;
-    private String customer = "David";
-    private CustomerManager customerManager;
+    private String producerName;
+    private CustomerManager customerManagement;
 
-    public Producer(StorageManager manager,
-                    CustomerManager customerManagement,
-                    String customerName){
+    public Producer(
+            StorageManager mangement,
+            CustomerManager customerManagement,
+            String producerName,
+            Object waitMonitor,
+            Object producentsWaitMonitor,
+            Object consumentsMonitor) {
 
-        this.customerManager = customerManagement;
-        this.manager = manager;
-        this.customer = customerName;
-
-        customerManager.add(new CustomerImpl(customerName , new BigDecimal(1000), Duration.ofDays(1000)));
+        this.manager = mangement;
+        this.customerManagement = customerManagement;
+        this.producerName = producerName;
+        this.waitMonitor = waitMonitor;
+        this.producerMonitor = producentsWaitMonitor;
+        this.consumerMoniter = consumentsMonitor;
+        this.counter = 1;
     }
 
-    public void put(){
-        Random random = new Random();
-        int zahl = (int)((Math.random()) * 5);
-        System.out.println(zahl);
+    public void run(){
+        System.out.println("Starting thread");
+        while(true){
+            synchronized (producerMonitor) {
+                Random randomObj = new Random();
 
-        int lagerDauer = (int)((Math.random()) * 20000);
-        double price = (double)((Math.random()) * 12 + 1);
-        BigDecimal value = new BigDecimal(price);
-        Duration duration = Duration.ofDays(lagerDauer);
-        Cargo cargo = new CargoImpl(this.manager.customerManager.getList().get(zahl-1),value,duration,null);
+                int zahl = (int)((Math.random()) * manager.customerManager.getList().size() + 1);
+                //System.out.println(zahl);
 
+                int lagerDauer = (int)((Math.random()) * 22 + 8);
+                double price = (double)((Math.random()) * 12 + 1);
+                BigDecimal valueEur = new BigDecimal(price);
+                Duration duration = Duration.ofDays(lagerDauer);
+                Cargo cargo = new CargoImpl(this.manager.customerManager.getList().get(zahl-1),valueEur,duration,null);
 
+                try {
+                    if (manager.addCargo(cargo)) {
+                        counter++;
+                        System.out.println( producerName + " Thread: "  + "Cargo Number" + counter + " added succesfully");
+                    } else {
+                        synchronized (waitMonitor) {
+                            do{
+                                try {
+                                    System.out.println("Producer Thread : Cargo " + counter + " cannot be added. Waiting");
+                                    synchronized (consumerMoniter) {
+                                        consumerMoniter.notify();
+                                    }
+                                    waitMonitor.wait();
+
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }while (!manager.addCargo(cargo));
+                            counter++;
+                            System.out.println(this.getName() + "  stores cargo from " + cargo.getOwner().getName());
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }

@@ -96,14 +96,17 @@ public class CargoImpl implements Cargo {
 
     @Override
     public String toString(){
-        String harzards = "[";
-        for(Hazard harzard : this.getHazards()){
-            harzards += (harzard.name()+", ");
+        if(hazards != null){
+            String harzards = "[";
+            for(Hazard harzard : this.getHazards()){
+                harzards += (harzard.name()+", ");
 
-        } harzards += "]";
+            } harzards += "]";
+        }
+
         return "# "+this.storeNumber+" | owner: "+this.getOwner().getName()+" | value: "
                 +this.getValue()+" | last inspect: "+this.getLastInspectionDate().toString()
-                +" | harzards:"+harzards;
+                +" | harzards:"+hazards;
     }
 }
 

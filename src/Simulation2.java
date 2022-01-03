@@ -1,5 +1,6 @@
-import Simulations.SyncConsumer;
+import Simulations.InspectionThread;
 import Simulations.Producer;
+import Simulations.SyncConsumer;
 import storageContract.administration.*;
 import storageContract.cargo.Cargo;
 
@@ -7,8 +8,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class Simulation1 {
-
+public class Simulation2 {
     public static void main(String[] args) {
         CustomerManager customerStore = new CustomerManager(new ArrayList<Customer>());
         Customer h1 = new CustomerImpl("David", BigDecimal.valueOf(100), Duration.ofDays(42));
@@ -29,22 +29,21 @@ public class Simulation1 {
         String name = "Producer 1";
         String name2 = "Producer 2";
 
-        StorageManager v1 = new StorageManager(a1,customerStore);
+        StorageManager v1 = new StorageManager(a1, customerStore);
 
         Object waitMonitor = new Object();
         Object producentsWaitMonitor = new Object();
         Object consumentsMonitor = new Object();
 
-        Thread einlagerung1 = new Producer(v1, customerStore, name ,waitMonitor,producentsWaitMonitor, consumentsMonitor);
-        Thread einlagerung2 = new Producer(v1, customerStore, name2 ,waitMonitor,producentsWaitMonitor, consumentsMonitor);
-        Thread auslagerung1 = new SyncConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
-        Thread auslagerung2 = new SyncConsumer(v1,customerStore,waitMonitor, consumentsMonitor , "Consumer 2");
+        Thread producer = new Producer(v1, customerStore, name, waitMonitor, producentsWaitMonitor, consumentsMonitor);
+        Thread inspector = new InspectionThread(v1, customerStore, waitMonitor, consumentsMonitor, "Inspector 1");
+        Thread consumer = new SyncConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
 
-        einlagerung1.start();
-        einlagerung2.start();
-        auslagerung1.start();
-        auslagerung2.start();
 
+
+
+        producer.start();
+        consumer.start();
+        inspector.start();
     }
-
 }

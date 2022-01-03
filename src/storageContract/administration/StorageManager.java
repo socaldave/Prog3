@@ -4,6 +4,7 @@ import storageContract.cargo.Cargo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Observable;
 
 public class StorageManager extends Observable implements Serializable {
@@ -17,7 +18,7 @@ public class StorageManager extends Observable implements Serializable {
     }
 
     public StorageManager(Storage<Cargo> store, CustomerManager customerStore) {
-        this.storage = new Storage<>();
+        this.storage =store;
         this.customerManager = customerStore;
     }
 
@@ -28,33 +29,25 @@ public class StorageManager extends Observable implements Serializable {
 
     public synchronized boolean  addCargo(Cargo cargo) {
         try {
-            while(storage.size() == storage.maxValue){
-                wait();
-            }
-            if (storage.add(cargo)) {
+            if (storage.add(cargo) != false) {
+                //cargo.setStorageNumber(store.size() - 1);
+                //cargo.setStorageNumber(getStorageNumber(cargo));
                 if (storage.size() == (storage.maxValue - this.capNotification)) {
                     notifyObservers();
                 }
                 updateIndex();
-                notifyAll();
                 return true;
             }
-            notifyAll();
             return false;
         } catch (Exception e) {
             return false;
         }
     }
 
-    public synchronized boolean removeCargo(int index) {
+    public  boolean removeCargo(int index) {
         try {
-            while(storage.size() != storage.maxValue ){
-                wait();
-            }
             storage.remove(index);
             updateIndex();
-
-            notifyAll();
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
@@ -180,5 +173,12 @@ public class StorageManager extends Observable implements Serializable {
             }
         }
         return cargo;
+    }
+
+    public boolean Inspection(int storageNumber){
+        Cargo inspectedCargo = storage.get(storageNumber);
+        if(inspectedCargo == null) return false;
+        inspectedCargo.setLastInspectionDate(new Date());
+        return true;
     }
 }
