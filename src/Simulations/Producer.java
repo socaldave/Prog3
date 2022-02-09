@@ -41,7 +41,7 @@ public class Producer extends Thread{
         System.out.println("Starting thread");
         while(true){
             synchronized (producerMonitor) {
-                Random randomObj = new Random();
+
 
                 int zahl = (int)((Math.random()) * manager.customerManager.getList().size() + 1);
                 //System.out.println(zahl);

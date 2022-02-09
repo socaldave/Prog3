@@ -13,13 +13,30 @@ public class ControllerImpl implements Controller {
     View view;
     //ViewObserver viewObserver;
 
+
+    //Mode Listener
     InitListener inputEventListenerActiveMode;
+
     AddListener inputEventListenerAddMode;
+    AddCargoListener addCargoListener;
+    AddCustomerListener addCustomerListener;
+
+    //Delete Listeners
     DeleteListener inputEventListenerDeleteMode;
+    DeleteCargoListener deleteCargoListener;
+    DeleteCustomerListener deleteCustomerListener;
+
+    //List Listeners
     ListListener inputEventListenerListMode;
+    ListCustomerListener listCustomerListener;
+    ListCargoListener listCargoListener;
+
     PersistanceListener inputEventListenerPersistenceMode;
     ConfigModeListener inputEventListenerConfigMode;
+
+    //Inspection Listener
     EditListener inputEventListenerEditMode;
+    InspectionEventListener inspectionEventListener;
 
     // add success events
     AddCargoListener addEventListenerCargo;
@@ -31,11 +48,14 @@ public class ControllerImpl implements Controller {
         //this.managementObserver = new ManagementObserver(management, view);
         //this.management.addObserver(managementObserver);
         this.view = view;
+
         //this.viewObserver = new ViewObserver(view);
         this.init();
     }
 
     private void init() {
+
+        //TODO This should be handled in the MAIN class to allow for configuration
         //modes:
         this.inputEventListenerActiveMode = new InitListener(view, management);
         this.inputEventListenerAddMode = new AddListener(management, view);

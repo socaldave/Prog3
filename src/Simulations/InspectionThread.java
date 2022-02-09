@@ -37,15 +37,10 @@ public class InspectionThread extends Thread{
                     }
 
             try {
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-                /*catch(InterruptedException ex) {
-                    System.out.println("InterruptedEx.:" + ex);
-                }*/
-            //}
         }
     }
 }

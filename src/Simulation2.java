@@ -39,9 +39,6 @@ public class Simulation2 {
         Thread inspector = new InspectionThread(v1, customerStore, waitMonitor, consumentsMonitor, "Inspector 1");
         Thread consumer = new SyncConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
 
-
-
-
         producer.start();
         consumer.start();
         inspector.start();

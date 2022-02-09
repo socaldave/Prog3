@@ -11,6 +11,8 @@ public class Storage<E> extends ArrayList<E> {
     private final Condition full = this.lock.newCondition();
     private final Condition empty = this.lock.newCondition();
 
+    private static final long serialVersionUID  = 4592312602065581690l;
+
 
     @Override
     public boolean add(E e) {

@@ -181,4 +181,15 @@ public class StorageManager extends Observable implements Serializable {
         inspectedCargo.setLastInspectionDate(new Date());
         return true;
     }
+
+    public void list() {
+        for (int i = 0; i < this.storage.size(); i++) {
+            Cargo c = this.storage.get(i);
+            System.out.println("store number: " + i + " | owner: " + c.getOwner().getName() + " | store duration (min): " + c.getDurationOfStorage().getSeconds() / 60 + " | last inspecting date: " + c.getLastInspectionDate().toString());
+        }
+    }
+
+    public boolean resetContent(StorageManager management) {
+        return this.setListContent(management.storage);
+    }
 }

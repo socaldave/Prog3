@@ -18,6 +18,7 @@ public class CargoImpl implements Cargo {
     private BigDecimal value;
     private Duration storeDuration;
     private int storeNumber;
+    private static final long serialVersionUID  = 8468669427682268173l;
 
     public CargoImpl(Customer owner, BigDecimal value, Duration duration, Collection<Hazard> hazards){
         this.owner = owner;

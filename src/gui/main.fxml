@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="605.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+    <VBox fx:id="vbMenu">
+        <MenuBar>
+            <Menu fx:id="mMain" text="Main">
+            </Menu>
+
+            <Menu fx:id="mAbout" text="About">
+            </Menu>
+        </MenuBar>
+    </VBox>
+    <center>
+        <TableView fx:id="contentTableView" prefHeight="605.0" prefWidth="914.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="column1View" maxWidth="150.0" minWidth="53.0" prefWidth="61.0" text="storenumber" />
+                <TableColumn fx:id="column2View" maxWidth="160.0" minWidth="56.0" prefWidth="103.0" text="name of customer" />
+                <TableColumn fx:id="column3View" maxWidth="85.0" minWidth="14.0" prefWidth="56.0" text="value" />
+                <TableColumn fx:id="column4View" maxWidth="200.0" minWidth="0.0" prefWidth="45.0" text="storage duration" />
+                <TableColumn fx:id="column5View" maxWidth="90.0" minWidth="55.0" prefWidth="55.0" text="flammable" />
+                <TableColumn fx:id="column6View" maxWidth="90.0" minWidth="56.0" prefWidth="56.0" text="radioactive" />
+                <TableColumn fx:id="column7View" maxWidth="102.0" minWidth="54.0" prefWidth="54.0" text="explosive" />
+                <TableColumn fx:id="column8View" maxWidth="107.0" minWidth="45.0" prefWidth="45.0" text="toxic" />
+                <TableColumn fx:id="column9View" maxWidth="200.0" minWidth="81.0" prefWidth="82.0" text="type" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </center>
+    <left>
+        <TabPane prefHeight="604.0" prefWidth="333.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab text="Add Content">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <children>
+                                <Label fx:id="myLabel" layoutX="20.0" layoutY="13.0" text="Fracht Hinzufügen" underline="true">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="21.0" layoutY="440.0" mnemonicParsing="false" onAction="#onAddContentClick" prefHeight="27.0" prefWidth="141.0" text="Hinzufügen" />
+
+                                <TextField fx:id="customerNameInput2" layoutX="105.0" layoutY="38.0" prefHeight="27.0" prefWidth="180.0" />
+                                <TextField fx:id="valueInput" layoutX="105.0" layoutY="75.0" prefHeight="27.0" prefWidth="182.0" />
+                                <Label layoutX="21.0" layoutY="43.0" text="Customer" />
+                                <Label layoutX="21.0" layoutY="80.0" prefHeight="17.0" prefWidth="41.0" text="Value" />
+                                <TextField fx:id="daysInput" layoutX="205.0" layoutY="160.0" prefHeight="27.0" prefWidth="83.0" />
+                                <Label layoutX="20.0" layoutY="160.0" text="Duration of Storage" />
+                                <CheckBox fx:id="flammableTypInput" layoutX="28.0" layoutY="211.0" mnemonicParsing="false" text="flammable" />
+                                <CheckBox fx:id="radioactiveTypInput" layoutX="140.0" layoutY="211.0" mnemonicParsing="false" text="radioactive" />
+                                <CheckBox fx:id="explosiveTypInput" layoutX="140.0" layoutY="241.0" mnemonicParsing="false" text="explosive" />
+                                <CheckBox fx:id="toxicTypInput" layoutX="28.0" layoutY="241.0" mnemonicParsing="false" text="toxic" />
+                                <Label fx:id="statusAddContentFail" layoutX="31.0" layoutY="490.0" prefHeight="36.0" prefWidth="164.0" text="Error: Add content failture" textFill="#ff0000a6" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusAddContentSuccesful" layoutX="38.0" layoutY="490.0" prefHeight="17.0" prefWidth="130.0" text="Add Content Succesful" textFill="#00000094">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <ChoiceBox fx:id="typeInput" layoutX="22.0" layoutY="300.0" prefHeight="27.0" prefWidth="142.0" value="Cargo">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Cargo" />
+                                            <String fx:value="LiquidBulkCargo" />
+                                            <String fx:value="MixedCargoLiquidBulkAndUnitised" />
+                                            <String fx:value="UnitisedCargo" />
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                                <Label fx:id="pressuredLabel" layoutX="20.0" layoutY="340.0" text="isPressured" visible="false" />
+                                <TextField fx:id="liquidTypeInput" layoutX="205.0" layoutY="340.0" prefHeight="27.0" prefWidth="83.0" visible="false" />
+                                <Label fx:id="fragileLabel" layoutX="20.0" layoutY="380.0" text="isFraggile" visible="false" />
+                                <CheckBox fx:id="pressuredInput" layoutX="28.0" layoutY="340.0" mnemonicParsing="false" text="is pressured" />
+
+                                <CheckBox fx:id="fragileInput" layoutX="28.0" layoutY="380.0" mnemonicParsing="false" text="is fraggile" />
+                                <TextField fx:id="othersInput" layoutX="205.0" layoutY="380.0" prefHeight="27.0" prefWidth="83.0" visible="false" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Remove">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <children>
+                                <Label layoutX="31.0" layoutY="48.0" text="remove by table row number" />
+                                <TextField fx:id="removeInput" layoutX="31.0" layoutY="72.0" prefHeight="27.0" prefWidth="133.0" />
+                                <Label fx:id="myLabel1" layoutX="6.0" layoutY="21.0" text="Remove Cargo" underline="true">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="31.0" layoutY="105.0" mnemonicParsing="false" onAction="#onRemoveContentClick" prefHeight="27.0" prefWidth="133.0" text="Remove" />
+                                <Label fx:id="statusRemoveContentSuccessful" layoutX="41.0" layoutY="137.0" prefHeight="17.0" prefWidth="155.0" text="Remove content successful" textFill="#000000b0">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusRemoveContentFail" layoutX="42.0" layoutY="131.0" prefHeight="30.0" prefWidth="153.0" text="Error: Fail remove content" textFill="#ff0000ad" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Customer">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <children>
+                                <Label layoutX="13.0" layoutY="14.0" text="Name of Customer" />
+                                <TextField fx:id="customerNameInput" layoutX="13.0" layoutY="33.0" prefHeight="25.0" prefWidth="270.0" />
+                                <Button layoutX="13.0" layoutY="71.0" mnemonicParsing="false" onAction="#onAddCustomerClick" prefHeight="27.0" prefWidth="133.0" text="Add" />
+                                <TableView fx:id="customerTableView" layoutX="8.0" layoutY="112.0" prefHeight="340.0" prefWidth="281.0">
+                                    <columns>
+                                        <TableColumn fx:id="customerTableC1View" prefWidth="199.0" text="Name" />
+                                        <TableColumn fx:id="customerTableC2View" prefWidth="81.0" text="Id" />
+                                    </columns>
+                                </TableView>
+                                <Button layoutX="152.0" layoutY="71.0" mnemonicParsing="false" onAction="#onRemoveCustomerClick" prefHeight="27.0" prefWidth="133.0" text="Remove" />
+                                <Label fx:id="errorDuplicateCustomer" layoutX="14.0" layoutY="482.0" prefHeight="36.0" prefWidth="164.0" text="Error: Customer already in database" textFill="#ff0000a6" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusAddCustomerSuccessful" layoutX="14.0" layoutY="482.0" prefHeight="36.0" prefWidth="164.0" text="Add customer succesful" textFill="#000000a6" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusRemoveCustomerSuccessful" layoutX="14.0" layoutY="482.0" prefHeight="36.0" prefWidth="164.0" text="Remove customer succesful" textFill="#000000a6" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusRemoveCustomerFail" layoutX="14.0" layoutY="482.0" prefHeight="36.0" prefWidth="164.0" text="Remove customer fail" textFill="#000000a6" wrapText="true">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Data">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                            <children>
+                                <Button layoutX="21.0" layoutY="43.0" mnemonicParsing="false" onAction="#onSaveClick" prefHeight="27.0" prefWidth="121.0" text="Speichern jdb" />
+                                <Button layoutX="180.0" layoutY="43.0" mnemonicParsing="false" onAction="#onLoadClick" prefHeight="27.0" prefWidth="127.0" text="Laden jdb" />
+                                <Label layoutX="21.0" layoutY="15.0" text="JDB" />
+                                <Label layoutX="23.0" layoutY="97.0" text="JOS" />
+                                <Button layoutX="19.0" layoutY="127.0" mnemonicParsing="false" onAction="#onSaveJosClick" prefHeight="27.0" prefWidth="121.0" text="Speichern jos" />
+                                <Button layoutX="181.0" layoutY="128.0" mnemonicParsing="false" onAction="#onLoadJosClick" prefHeight="27.0" prefWidth="127.0" text="Laden jos" />
+                                <Label layoutX="23.0" layoutY="182.0" text="UDP" />
+                                <Button layoutX="18.0" layoutY="211.0" mnemonicParsing="false" onAction="#onSaveUdpClick" prefHeight="27.0" prefWidth="121.0" text="Speichern udp" />
+                                <Button layoutX="180.0" layoutY="210.0" mnemonicParsing="false" onAction="#onLoadUdpClick" prefHeight="27.0" prefWidth="127.0" text="Laden udp" />
+                                <Label layoutX="24.0" layoutY="259.0" text="TCP" />
+                                <Button layoutX="18.0" layoutY="291.0" mnemonicParsing="false" onAction="#onSaveTcpClick" prefHeight="27.0" prefWidth="121.0" text="Speichern tcp" />
+                                <Button layoutX="180.0" layoutY="290.0" mnemonicParsing="false" onAction="#onLoadTcpClick" prefHeight="27.0" prefWidth="127.0" text="Laden tcp" />
+
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </TabPane>
+    </left>
+</BorderPane>
+

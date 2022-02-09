@@ -8,6 +8,7 @@ public class CustomerImpl implements Customer{
     BigDecimal maxValue;
     Duration maxStorageTime;
     Integer id;
+    private static final long serialVersionUID = 2438199182536764087L;
 
     public CustomerImpl(String name, BigDecimal value, Duration time){
         this.name = name;

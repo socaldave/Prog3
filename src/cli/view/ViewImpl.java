@@ -1,12 +1,15 @@
 package cli.view;
 
 
-import events.handlers.InputEventHandler;
-import events.handlers.addEventHandler;
+import events.events.*;
+import events.handlers.*;
 import events.listeners.messages.AddEvent;
 import events.listeners.messages.AddEventListener;
 import events.listeners.modes.InputEvent;
 import events.listeners.modes.InputEventListener;
+import events.listeners.modes.ListCustomerListener;
+import network.tcp.TcpClient;
+import network.udp.UdpClient;
 import saveLoad.jbp.JDP_Save_Load;
 import saveLoad.jdp.JOS_Save_Load;
 import storageContract.administration.Customer;
@@ -26,12 +29,26 @@ public class ViewImpl extends Observable implements View {
     addEventHandler addHandler;
     AddEvent addEvent;
 
+    addCargoEventHandler addCargoEventHandler;
+
+    AddCustomerEventHandler addCustomerEventHandler;
+    DeleteCustomerEventHandler deleteCustomerEventHandler;
+    DeleteCargoEventHandler deleteCargoEventHandler;
+    InspectionEventHandler inspectionEventHandler;
+    ListCargoEventHandler listCargoEventHandler;
+    ListCustomerEventHandler listCustomerEventHandler;
+
+
+
     String viewMode;
     PrintStream ps;
     BufferedReader reader;
 
     JDP_Save_Load jdb;
     JOS_Save_Load jos;
+
+    TcpClient tcp;
+    UdpClient udp;
 
     public ViewImpl(InputStream is, OutputStream os) {
         this.viewMode = "";
@@ -232,8 +249,50 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
-    public void printIndexNotFound() {
+    public void handleAddCargoEvent(AddCargoEvent event) throws Exception {
+         this.addCargoEventHandler.handle(event);
+    }
 
+    @Override
+    public void handleAddCustomerEvent(AddCustomerEvent event) throws Exception {
+        this.addCustomerEventHandler.handle(event);
+    }
+
+    @Override
+    public void handleDeleteCustomerEvent(DeleteCustomerEvent event) throws Exception {
+        this.deleteCustomerEventHandler.handle(event);
+    }
+
+    @Override
+    public void handleDeleteCargoEvent(DeleteCargoEvent event) throws Exception {
+        this.deleteCargoEventHandler.handle(event);
+    }
+
+    @Override
+    public void handleInspectionEvent(InspectionEvent event) throws Exception {
+        this.inspectionEventHandler.handle(event);
+    }
+
+    @Override
+    public void handleListCargoEvent(ListCargoEvent event) throws Exception {
+        this.listCargoEventHandler.handle(event);
+    }
+
+    @Override
+    public void handleListCustomerEvent(ListCustomerEvent event) throws Exception {
+        this.listCustomerEventHandler.handle(event);
+    }
+
+    //TODO IMPLEMENT PERSISTANCE HANDLER
+    @Override
+    public void handlePersistanceEvent(PersistanceEvent event) throws Exception {
+
+    }
+
+
+    @Override
+    public void printIndexNotFound() {
+        ps.println("Index not found ...");
     }
 
     @Override
@@ -281,6 +340,7 @@ public class ViewImpl extends Observable implements View {
     @Override
     public void handleAddEvent(AddEvent addEvent) throws Exception {
         this.addHandler.handle(addEvent);
+        System.out.println("Handling event ");
     }
 
     @Override
@@ -327,37 +387,72 @@ public class ViewImpl extends Observable implements View {
         } catch (Exception e) {
             System.out.println("saveJOS error -> " + e.getMessage());
         }
+    }
 
+    public void saveJOS(StorageManager management, String filePath) {
+        if (jos == null) this.jos = new JOS_Save_Load();
+        File file = new File(filePath);
+        try (FileOutputStream fos = new FileOutputStream(file);) {
+            this.jos.saveDB(fos, management);
+        } catch (Exception e) {
+            System.out.println("saveJOS error -> " + e.getMessage());
+        }
     }
 
     @Override
     public void loadJDB(StorageManager management) {
 
         jdb = new JDP_Save_Load(management.customerManager);
-        //jdb.loadStore(management);
+
         try (FileInputStream fos = new FileInputStream(new File("db/storage.tmp"));) {
             jdb.loadDB(fos, management);
         } catch (Exception e) {
             System.out.println("loadJDB error -> " + e.getMessage());
         }
-        //System.out.println("load end, store size: " + this.dbModel.management.store.size());
+
 
 
     }
 
     @Override
     public void load(StorageManager management, int position) {
-
+        if (jos == null) this.jos = new JOS_Save_Load(management.customerManager);
+        try (FileInputStream fos = new FileInputStream(new File("db/store.txt"));) {
+            this.jos.load(fos, management, position);
+        } catch (Exception e) {
+            System.out.println("load position error -> " + e.getMessage());
+        }
     }
 
     @Override
     public void save(StorageManager management, int position) {
-
+        if (jos == null) this.jos = new JOS_Save_Load();
+        File file = new File("db/position.txt");
+        try (FileOutputStream fos = new FileOutputStream(file);) {
+            this.jos.save(fos, management,position);
+        } catch (Exception e) {
+            System.out.println("save position error -> " + e.getMessage());
+        }
     }
 
     @Override
     public void setNetwork(boolean tcp, boolean udp, StorageManager management) {
+        if (tcp || (tcp && udp)) {
+            this.tcp = new TcpClient();
+            StorageManager m = this.tcp.getData();
+            if (m != null) m.resetContent(m);
+            System.out.println("management loaded trough tcp client");
+        } else if (udp && !tcp) {
+            try {
+                this.udp = new UdpClient();
+                StorageManager m = this.udp.getData();
+                if (m != null) m.resetContent(m);
+                System.out.println("management loaded trough udp client");
 
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     @Override
@@ -384,8 +479,6 @@ public class ViewImpl extends Observable implements View {
         } catch (Exception e) {
             System.out.println("loadJOS error -> " + e.getMessage());
         }
-
-
     }
 
 

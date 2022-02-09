@@ -26,6 +26,7 @@ public class AddListener implements InputEventListener {
         this.view = view;
     }
 
+    //TODO parsing of user strings and descisions should be handled in the CLI,GUI
     @Override
     public void onInputEvent(InputEvent event) throws Exception {
         String text = event.getCurrentCommand();

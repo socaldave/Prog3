@@ -1,6 +1,7 @@
 package cli.view;
 
 
+import events.events.*;
 import events.handlers.InputEventHandler;
 import events.handlers.addEventHandler;
 import events.listeners.messages.AddEvent;
@@ -41,6 +42,24 @@ public interface View {
     void listContentByName(StorageManager management, String customerName);
     void addInputEventListener(InputEventListener listener);
     void handleInputEvent(InputEvent inputEvent) throws Exception;
+
+
+
+    void handleAddCargoEvent(AddCargoEvent event) throws Exception;
+    void handleAddCustomerEvent(AddCustomerEvent event) throws Exception;
+    void handleDeleteCustomerEvent(DeleteCustomerEvent event) throws Exception;
+    void handleDeleteCargoEvent(DeleteCargoEvent event) throws Exception;
+    void handleInspectionEvent(InspectionEvent event) throws Exception;
+    void handleListCargoEvent(ListCargoEvent event) throws Exception;
+    void handleListCustomerEvent(ListCustomerEvent event) throws Exception;
+    void handlePersistanceEvent(PersistanceEvent event) throws Exception;
+
+
+
+
+
+
+
     void printIndexNotFound();
 
     void setViewMode(String viewMode);
