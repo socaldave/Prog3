@@ -5,9 +5,7 @@ import events.events.*;
 import events.handlers.*;
 import events.listeners.messages.AddEvent;
 import events.listeners.messages.AddEventListener;
-import events.listeners.modes.InputEvent;
-import events.listeners.modes.InputEventListener;
-import events.listeners.modes.ListCustomerListener;
+import events.listeners.modes.*;
 import network.tcp.TcpClient;
 import network.udp.UdpClient;
 import saveLoad.jbp.JDP_Save_Load;
@@ -29,7 +27,7 @@ public class ViewImpl extends Observable implements View {
     addEventHandler addHandler;
     AddEvent addEvent;
 
-    addCargoEventHandler addCargoEventHandler;
+    AddCargoEventHandler addCargoEventHandler;
 
     AddCustomerEventHandler addCustomerEventHandler;
     DeleteCustomerEventHandler deleteCustomerEventHandler;
@@ -183,6 +181,18 @@ public class ViewImpl extends Observable implements View {
         ps.println("Low capacity, just " + capacityProcentRest + " free");
     }
 
+    //Todo Implement
+    @Override
+    public void printInvalidType() {
+
+    }
+
+    @Override
+    public void printInvalidCargoParams() {
+        ps.println("# Invalid Paramaters entered for Cargo");
+        ps.println("# Returning to Main Menu.... ");
+    }
+
     @Override
     public void listCustomer(StorageManager management)
             //throws CustomerNotFoundException
@@ -249,6 +259,41 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
+    public void setCargoEventHandler(AddCargoEventHandler AddCargoEventHandler) throws Exception {
+        this.addCargoEventHandler = AddCargoEventHandler;
+    }
+
+    @Override
+    public void setCustomerEventHandler(AddCustomerEventHandler addCustomerEventHandler) throws Exception {
+        this.addCustomerEventHandler = addCustomerEventHandler;
+    }
+
+    @Override
+    public void setDeleteCargoHandler(DeleteCargoEventHandler deleteCargoEventHandler) throws Exception {
+        this.deleteCargoEventHandler = deleteCargoEventHandler;
+    }
+
+    @Override
+    public void setDeleteCustomerHandler(DeleteCustomerEventHandler deleteCustomerEventHandler) throws Exception {
+        this.deleteCustomerEventHandler = deleteCustomerEventHandler;
+    }
+
+    @Override
+    public void setInspectionHandler(InspectionEventHandler inspectionEventHandler) throws Exception {
+        this.inspectionEventHandler = inspectionEventHandler;
+    }
+
+    @Override
+    public void setListCargoEventHandler(ListCargoEventHandler inputEvent) throws Exception {
+        this.listCargoEventHandler = inputEvent;
+    }
+
+    @Override
+    public void setListCustomerHandler(ListCustomerEventHandler inputEvent) throws Exception {
+        this.listCustomerEventHandler = inputEvent;
+    }
+
+    @Override
     public void handleAddCargoEvent(AddCargoEvent event) throws Exception {
          this.addCargoEventHandler.handle(event);
     }
@@ -286,6 +331,46 @@ public class ViewImpl extends Observable implements View {
     //TODO IMPLEMENT PERSISTANCE HANDLER
     @Override
     public void handlePersistanceEvent(PersistanceEvent event) throws Exception {
+
+    }
+
+    @Override
+    public void addAddCargoListener(AddingCargoListener listener) throws Exception {
+        addCargoEventHandler.add(listener);
+    }
+
+    @Override
+    public void addAddCustomerListener(AddCustomerListener listener) throws Exception {
+        addCustomerEventHandler.add(listener);
+    }
+
+    @Override
+    public void addDeleteCustomerListener(DeleteCustomerListener listener) throws Exception {
+
+    }
+
+    @Override
+    public void addDeleteCargoListener(DeleteCargoListener listener) throws Exception {
+
+    }
+
+    @Override
+    public void addInspectionListener(InspectionEventListener listener) throws Exception {
+
+    }
+
+    @Override
+    public void addListCargoListener(ListCargoListener listener) throws Exception {
+
+    }
+
+    @Override
+    public void addListCustomerListener(ListCustomerListener listener) throws Exception {
+
+    }
+
+    @Override
+    public void addPersistanceListener(PersistanceListener listener) throws Exception {
 
     }
 
@@ -500,4 +585,11 @@ public class ViewImpl extends Observable implements View {
         ps.println("# save [position]");
         ps.println("# load [position]");
     }
+
+
+    public void setAddCustomerEventHandler(AddCustomerEventHandler addCustomerEventHandler) {
+        this.addCustomerEventHandler = addCustomerEventHandler;
+    }
+
+
 }

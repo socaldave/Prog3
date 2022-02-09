@@ -1,10 +1,7 @@
 package events.handlers;
 
-import events.events.AddCargoEvent;
 import events.events.AddCustomerEvent;
-import events.listeners.modes.AddCargoListener;
 import events.listeners.modes.AddCustomerListener;
-import events.listeners.modes.InputEventListener;
 
 import java.util.ArrayList;
 import java.util.List;

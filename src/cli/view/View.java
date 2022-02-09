@@ -2,12 +2,10 @@ package cli.view;
 
 
 import events.events.*;
-import events.handlers.InputEventHandler;
-import events.handlers.addEventHandler;
+import events.handlers.*;
 import events.listeners.messages.AddEvent;
 import events.listeners.messages.AddEventListener;
-import events.listeners.modes.InputEvent;
-import events.listeners.modes.InputEventListener;
+import events.listeners.modes.*;
 
 import storageContract.administration.Customer;
 
@@ -37,11 +35,31 @@ public interface View {
     void printAddCustomer(Customer customer);
     void printUnsupportCommand();
     void printLowCapacity(double cap);
+    void printInvalidType();
+
+    void printInvalidCargoParams();
+
+
+
     void listCustomer(StorageManager management);
     void listContentOfOwner(StorageManager management, String customerName);
     void listContentByName(StorageManager management, String customerName);
     void addInputEventListener(InputEventListener listener);
     void handleInputEvent(InputEvent inputEvent) throws Exception;
+
+
+
+
+    void setCargoEventHandler(AddCargoEventHandler AddCargoEventHandler) throws Exception;
+    void setCustomerEventHandler(AddCustomerEventHandler inputEvent) throws Exception;
+    void setDeleteCargoHandler(DeleteCargoEventHandler inputEvent) throws Exception;
+    void setDeleteCustomerHandler(DeleteCustomerEventHandler inputEvent) throws Exception;
+    void setInspectionHandler(InspectionEventHandler inputEvent) throws Exception;
+    void setListCargoEventHandler(ListCargoEventHandler inputEvent) throws Exception;
+    void setListCustomerHandler(ListCustomerEventHandler inputEvent) throws Exception;
+
+
+
 
 
 
@@ -53,6 +71,15 @@ public interface View {
     void handleListCargoEvent(ListCargoEvent event) throws Exception;
     void handleListCustomerEvent(ListCustomerEvent event) throws Exception;
     void handlePersistanceEvent(PersistanceEvent event) throws Exception;
+
+    void addAddCargoListener(AddingCargoListener listener) throws Exception;
+    void addAddCustomerListener(AddCustomerListener listener) throws Exception;
+    void addDeleteCustomerListener(DeleteCustomerListener listener) throws Exception;
+    void addDeleteCargoListener(DeleteCargoListener listener) throws Exception;
+    void addInspectionListener(InspectionEventListener listener) throws Exception;
+    void addListCargoListener(ListCargoListener listener) throws Exception;
+    void addListCustomerListener(ListCustomerListener listener) throws Exception;
+    void addPersistanceListener(PersistanceListener listener) throws Exception;
 
 
 

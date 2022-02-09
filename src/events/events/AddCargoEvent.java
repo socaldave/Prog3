@@ -1,5 +1,6 @@
 package events.events;
 
+import events.listeners.modes.AddModeListener;
 import storageContract.cargo.Hazard;
 
 import java.lang.reflect.Type;
@@ -10,7 +11,7 @@ import java.util.EventObject;
 
 public class AddCargoEvent extends EventObject {
 
-    private Class type;
+    private String type;
     private String customerName;
     private BigDecimal value;
     private Duration duration;
@@ -19,7 +20,7 @@ public class AddCargoEvent extends EventObject {
     private Boolean fragile;
     private Boolean fest;
 
-    public AddCargoEvent(Object source, Class type, String customerName, BigDecimal value, Duration duration, Collection<Hazard> harzards, Boolean pressurized, Boolean fraggile, Boolean fest) {
+    public AddCargoEvent(Object source, String type, String customerName, BigDecimal value, Duration duration, Collection<Hazard> harzards, Boolean pressurized, Boolean fraggile, Boolean fest) {
         super(source);
         this.type = type;
         this.customerName = customerName;
@@ -31,7 +32,9 @@ public class AddCargoEvent extends EventObject {
         this.fest = fest;
     }
 
-    public Class getType() {
+
+
+    public String getType() {
         return type;
     }
 

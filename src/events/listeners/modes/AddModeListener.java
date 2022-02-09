@@ -3,6 +3,8 @@ package events.listeners.modes;
 import cli.Commands;
 
 import cli.view.View;
+import events.events.AddCargoEvent;
+import events.events.AddCustomerEvent;
 import events.listeners.messages.AddEvent;
 import storageContract.administration.Customer;
 import storageContract.administration.CustomerImpl;
@@ -14,14 +16,16 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
-public class AddListener implements InputEventListener {
+public class AddModeListener implements InputEventListener {
 
     private StorageManager storageManager;
     private View view;
 
-    public AddListener(StorageManager management, View view) {
+
+    public AddModeListener(StorageManager management, View view) {
         this. storageManager= management;
         this.view = view;
     }
@@ -35,11 +39,8 @@ public class AddListener implements InputEventListener {
             if (st.countTokens() > 1) {
                 this.doAddCargo(st);
             } else {
-                Customer customer = new CustomerImpl(st.nextToken(), BigDecimal.valueOf(1000000), Duration.ofDays(90));
-                if (this.storageManager.customerManager.add(customer)) {
-                    AddEvent addEvent = new AddEvent(this.view, customer);
-                    this.view.handleAddEvent(addEvent);
-                }
+                AddCustomerEvent addCustomerEvent = new AddCustomerEvent(this, st.nextToken(),  Duration.ofDays(90), BigDecimal.valueOf(1000000) );
+                view.handleAddCustomerEvent(addCustomerEvent);
             }
         }
     }
@@ -59,27 +60,14 @@ public class AddListener implements InputEventListener {
             if (st.hasMoreTokens()) fraggile = this.YesOrNo(st.nextToken());
             if (st.hasMoreTokens()) fest = this.YesOrNo(st.nextToken());
             Cargo cargo = null;
-            switch (type) {
-                case "cargo": {
-                    cargo = new CargoImpl(this.storageManager.customerManager.getCustomerWithName(customer), value, Duration.ofSeconds(sec), harzards);
-                }
-                break;
-                case "liquidbulkcargo": {
-                    cargo = new LiquidBulkCargoImpl(this.storageManager.customerManager.getCustomerWithName(customer), value, Duration.ofSeconds(sec), harzards, pressurized);
-                }
-                break;
+            AddCargoEvent addCargoEvent = new AddCargoEvent(this, type,customer,value, Duration.ofDays(sec), harzards,pressurized, fraggile, fest);
+            this.view.handleAddCargoEvent(addCargoEvent);
 
-                case "unitisedcargo": {
-                    cargo = new UnitisedCargoImpl(this.storageManager.customerManager.getCustomerWithName(customer), value, Duration.ofSeconds(sec), harzards, pressurized, fraggile);
-                }
-                break;
-            }
-            if (this.storageManager.addCargo(cargo)) {
-                AddEvent addEvent = new AddEvent(view, cargo);
-                this.view.getAddHandler().handle(addEvent);
-            }
+
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
+            view.printUnsupportCommand();
         }
     }
 

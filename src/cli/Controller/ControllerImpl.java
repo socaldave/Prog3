@@ -17,7 +17,7 @@ public class ControllerImpl implements Controller {
     //Mode Listener
     InitListener inputEventListenerActiveMode;
 
-    AddListener inputEventListenerAddMode;
+    AddModeListener inputEventListenerAddMode;
     AddCargoListener addCargoListener;
     AddCustomerListener addCustomerListener;
 
@@ -58,7 +58,7 @@ public class ControllerImpl implements Controller {
         //TODO This should be handled in the MAIN class to allow for configuration
         //modes:
         this.inputEventListenerActiveMode = new InitListener(view, management);
-        this.inputEventListenerAddMode = new AddListener(management, view);
+        this.inputEventListenerAddMode = new AddModeListener(management, view);
         this.inputEventListenerDeleteMode = new DeleteListener(management, view);
         this.inputEventListenerListMode = new ListListener(management, view);
         this.inputEventListenerPersistenceMode = new PersistanceListener(management, view);

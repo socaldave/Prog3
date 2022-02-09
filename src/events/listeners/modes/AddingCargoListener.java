@@ -15,11 +15,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class AddCargoListener {
+public class AddingCargoListener {
     private StorageManager storageManager;
     private View view;
 
-    public AddCargoListener(StorageManager management, View view) {
+    public AddingCargoListener(StorageManager management, View view) {
         this. storageManager= management;
         this.view = view;
     }
@@ -29,6 +29,7 @@ public class AddCargoListener {
     public void onAddCargoEvent(AddCargoEvent event) throws Exception {
         try {
             Cargo cargo = null;
+            System.out.println(event.getType().toString());
             switch (event.getType().toString()) {
                 case "cargo": {
                     cargo = new CargoImpl(storageManager.customerManager.getCustomerWithName(event.getCustomerName()), event.getValue(), event.getDuration(), event.getHazards());
@@ -47,6 +48,8 @@ public class AddCargoListener {
             if (this.storageManager.addCargo(cargo)) {
                 AddEvent addEvent = new AddEvent(view, cargo);
                 this.view.getAddHandler().handle(addEvent);
+            } else {
+                view.printInvalidCargoParams();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -55,39 +58,6 @@ public class AddCargoListener {
 
     public void setManagement(StorageManager management){
         this.storageManager = management;
-    }
-
-    public Collection<Hazard> getHazardsOfInput(String inputHarzards) {
-        Collection<Hazard> col = new LinkedList<>();
-        if (inputHarzards.equals(",")) return col;
-        else if (inputHarzards.contains(",") && inputHarzards.length() > 1) {
-            String[] str = inputHarzards.split(",");
-            for (int i = 0; i < str.length; i++) {
-                col = checkHazards(str[i], col);
-            }
-        } else col = checkHazards(inputHarzards, col);
-        return col;
-    }
-
-    public Collection<Hazard> checkHazards(String str, Collection<Hazard> col) {
-        if (str.toLowerCase().equals(Hazard.flammable.toString().toLowerCase()))
-            col.add(Hazard.flammable);
-        else if (str.toLowerCase().equals(Hazard.toxic.toString().toLowerCase()))
-            col.add(Hazard.toxic);
-        else if (str.toLowerCase().equals(Hazard.radioactive.toString().toLowerCase()))
-            col.add(Hazard.radioactive);
-        else if (str.toLowerCase().equals(Hazard.explosive.toString().toLowerCase()))
-            col.add(Hazard.explosive);
-        return col;
-
-    }
-
-    public boolean YesOrNo(String input) {
-        if (input.toLowerCase().equals("y")) return true;
-        else if (input.toLowerCase().equals("yes")) return true;
-        else if (input.toLowerCase().equals("n")) return false;
-        else if (input.toLowerCase().equals("no")) return false;
-        return false;
     }
 
 }
