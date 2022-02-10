@@ -2,6 +2,8 @@ package events.listeners.modes;
 
 import cli.Commands;
 import cli.view.View;
+import events.events.ListCargoEvent;
+import events.events.ListCustomerEvent;
 import storageContract.administration.StorageManager;
 
 import java.util.StringTokenizer;
@@ -25,12 +27,16 @@ public class ListListener implements InputEventListener {
         if (lastCommand.equals(Commands.LIST_MODE)) {
             switch (mode) {
                 case Commands.CUSTOMER: {
+                    ListCustomerEvent listEvent = new ListCustomerEvent();
+                    view.handleListCustomerEvent(listEvent);
                     this.doListCustomer();
                 }
                 break;
                 case Commands.CARGO: {
                     try{
                         if(tokenizer.hasMoreTokens()){
+                            ListCargoEvent Listevent = new ListCargoEvent(tokenizer.nextToken());
+                            view.handleListCargoEvent(Listevent);
                             this.doListContentByType(tokenizer.nextToken());
                         } else this.doListContent();
                     } catch (Exception e){

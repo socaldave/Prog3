@@ -60,10 +60,9 @@ public class AddModeListener implements InputEventListener {
             if (st.hasMoreTokens()) fraggile = this.YesOrNo(st.nextToken());
             if (st.hasMoreTokens()) fest = this.YesOrNo(st.nextToken());
             Cargo cargo = null;
+
             AddCargoEvent addCargoEvent = new AddCargoEvent(this, type,customer,value, Duration.ofDays(sec), harzards,pressurized, fraggile, fest);
             this.view.handleAddCargoEvent(addCargoEvent);
-
-
 
         } catch (Exception e) {
             //System.out.println(e.getMessage());

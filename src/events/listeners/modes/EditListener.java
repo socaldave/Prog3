@@ -2,6 +2,7 @@ package events.listeners.modes;
 
 import cli.Commands;
 import cli.view.View;
+import events.events.InspectionEvent;
 import storageContract.administration.StorageManager;
 
 import java.util.StringTokenizer;
@@ -23,13 +24,13 @@ public class EditListener implements InputEventListener {
             view.printInspectInstruction();
             try{
                 int id = Integer.parseInt(st.nextToken());
-                this.doInspect(id);
+                InspectionEvent inspectionEvent = new InspectionEvent(id);
+                view.handleInspectionEvent(inspectionEvent);
+
             } catch (Exception e){
-                view.printUnsupportCommand();
+                view.printInvalidCargoParams();
             }
         }
     }
-    public void doInspect(int id){
-        view.inspect(this.storageManager,id);
-    }
+
 }

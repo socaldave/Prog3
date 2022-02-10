@@ -32,7 +32,7 @@ public class ControllerImpl implements Controller {
     ListCargoListener listCargoListener;
 
     PersistanceListener inputEventListenerPersistenceMode;
-    ConfigModeListener inputEventListenerConfigMode;
+
 
     //Inspection Listener
     EditListener inputEventListenerEditMode;
@@ -62,7 +62,7 @@ public class ControllerImpl implements Controller {
         this.inputEventListenerDeleteMode = new DeleteListener(management, view);
         this.inputEventListenerListMode = new ListListener(management, view);
         this.inputEventListenerPersistenceMode = new PersistanceListener(management, view);
-        this.inputEventListenerConfigMode = new ConfigModeListener(management, view);
+
         this.inputEventListenerEditMode = new EditListener(management, view);
         // listen to view
         this.view.addInputEventListener(inputEventListenerActiveMode);
@@ -70,7 +70,7 @@ public class ControllerImpl implements Controller {
         this.view.addInputEventListener(inputEventListenerDeleteMode);
         this.view.addInputEventListener(inputEventListenerListMode);
         this.view.addInputEventListener(inputEventListenerPersistenceMode);
-        this.view.addInputEventListener(inputEventListenerConfigMode);
+
         this.view.addInputEventListener(inputEventListenerEditMode);
         //messages:
         this.addEventListenerCargo = new AddCargoListener(view);

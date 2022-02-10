@@ -15,6 +15,25 @@ public class ListCargoListener {
     }
 
     public void onListCargo(ListCargoEvent event) {
-        view.listContentByTyp(manager ,event.getType());
+
+        if(event.getType() == null || event.getType().equals("")){
+            doListContent();
+        } else{
+            view.listContentByTyp(manager ,event.getType());
+        }
+
     }
+
+    public void doListContent() {
+        view.listContent(this.manager);
+    }
+
+    public void doListContentByType(String type) {
+        view.listContentByTyp(this.manager,type);
+    }
+
+    public void doListContentByName(String nameOfCustomer) {
+        view.listContentByName(this.manager, nameOfCustomer);
+    }
+
 }

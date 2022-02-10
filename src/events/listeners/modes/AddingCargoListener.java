@@ -24,13 +24,12 @@ public class AddingCargoListener {
         this.view = view;
     }
 
-    //TODO parsing of user strings and descisions should be handled in the CLI,GUI
 
     public void onAddCargoEvent(AddCargoEvent event) throws Exception {
         try {
             Cargo cargo = null;
             System.out.println(event.getType().toString());
-            switch (event.getType().toString()) {
+            switch (event.getType().toString().toLowerCase()) {
                 case "cargo": {
                     cargo = new CargoImpl(storageManager.customerManager.getCustomerWithName(event.getCustomerName()), event.getValue(), event.getDuration(), event.getHazards());
                 }
@@ -48,6 +47,7 @@ public class AddingCargoListener {
             if (this.storageManager.addCargo(cargo)) {
                 AddEvent addEvent = new AddEvent(view, cargo);
                 this.view.getAddHandler().handle(addEvent);
+                view.printCargoAdded();
             } else {
                 view.printInvalidCargoParams();
             }

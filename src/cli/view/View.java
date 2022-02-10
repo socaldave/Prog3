@@ -38,6 +38,11 @@ public interface View {
     void printInvalidType();
 
     void printInvalidCargoParams();
+    void printCargoAdded();
+    void printCustomerAdded(String name);
+
+
+    void printCustomerNontexistent(String name);
 
 
 
@@ -57,6 +62,7 @@ public interface View {
     void setInspectionHandler(InspectionEventHandler inputEvent) throws Exception;
     void setListCargoEventHandler(ListCargoEventHandler inputEvent) throws Exception;
     void setListCustomerHandler(ListCustomerEventHandler inputEvent) throws Exception;
+    void setPersistanceHander(PersistanceEventHandler persistanceEventHandler) throws Exception;
 
 
 
@@ -79,7 +85,7 @@ public interface View {
     void addInspectionListener(InspectionEventListener listener) throws Exception;
     void addListCargoListener(ListCargoListener listener) throws Exception;
     void addListCustomerListener(ListCustomerListener listener) throws Exception;
-    void addPersistanceListener(PersistanceListener listener) throws Exception;
+    void addPersistanceListener(saveLoadListener listener) throws Exception;
 
 
 

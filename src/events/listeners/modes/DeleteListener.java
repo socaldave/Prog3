@@ -2,6 +2,8 @@ package events.listeners.modes;
 
 import cli.Commands;
 import cli.view.View;
+import events.events.DeleteCargoEvent;
+import events.events.DeleteCustomerEvent;
 import storageContract.administration.Customer;
 
 import storageContract.administration.StorageManager;
@@ -24,13 +26,11 @@ public class DeleteListener implements InputEventListener {
         String str = st.nextToken();
         if (event.getLastCommand().equals(Commands.DELETE_MODE)) {
             if (isNumeric(event.getCurrentCommand())) {
-                management.removeCargo(Integer.parseInt(str));
+                DeleteCargoEvent deleteCargoEvent = new DeleteCargoEvent(Integer.parseInt(str));
+                view.handleDeleteCargoEvent(deleteCargoEvent);
             } else {
-                Customer customer = management.customerManager.getCustomerWithName(str);
-                if (customer != null) {
-                    if (management.customerManager.removeCustomerByName(str)) ;
-                    view.printRemoveCustomer(str);
-                }
+                DeleteCustomerEvent deleteCustomerEvent = new DeleteCustomerEvent(str);
+                view.handleDeleteCustomerEvent(deleteCustomerEvent);
             }
         }
     }

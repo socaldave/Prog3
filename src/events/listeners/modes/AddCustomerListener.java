@@ -25,6 +25,7 @@ public class AddCustomerListener {
         if (this.storageManager.customerManager.add(customer)) {
             AddEvent addEvent = new AddEvent(this.view, customer);
             this.view.handleAddEvent(addEvent);
+            view.printCustomerAdded(event.getCustomerName());
         } else
             this.view.printUnsupportCommand();
     }

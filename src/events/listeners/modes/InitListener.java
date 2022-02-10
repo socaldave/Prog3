@@ -40,11 +40,8 @@ public class InitListener implements InputEventListener {
                     view.printSaveLoad();
                 }
                 break;
-                case Commands.CONFIG_MODE: {
-                    view.setViewMode(View.MODE_ACTIVE);
-                    view.printConfigInstructions();
-                }
-                break;
+
+
                 case Commands.EDIT_MODE: {
                     view.setViewMode(View.MODE_ACTIVE);
                     view.printInspectInstruction();

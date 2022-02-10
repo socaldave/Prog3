@@ -35,6 +35,7 @@ public class ViewImpl extends Observable implements View {
     InspectionEventHandler inspectionEventHandler;
     ListCargoEventHandler listCargoEventHandler;
     ListCustomerEventHandler listCustomerEventHandler;
+    PersistanceEventHandler persistanceEventHandler;
 
 
 
@@ -184,13 +185,29 @@ public class ViewImpl extends Observable implements View {
     //Todo Implement
     @Override
     public void printInvalidType() {
-
+        ps.println("# Invalid Type entered");
     }
 
     @Override
     public void printInvalidCargoParams() {
         ps.println("# Invalid Paramaters entered for Cargo");
         ps.println("# Returning to Main Menu.... ");
+    }
+
+    //TODO
+    @Override
+    public void printCargoAdded() {
+        ps.println("# Sucessfully added Cargo");
+    }
+
+    @Override
+    public void printCustomerAdded(String name) {
+        ps.println("# Sucessfully added " + name);
+    }
+
+    @Override
+    public void printCustomerNontexistent(String name) {
+        ps.println("# Customer " + name +  " does not exist");
     }
 
     @Override
@@ -294,6 +311,11 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
+    public void setPersistanceHander(PersistanceEventHandler persistanceEventHandler) throws Exception {
+        this.persistanceEventHandler = persistanceEventHandler;
+    }
+
+    @Override
     public void handleAddCargoEvent(AddCargoEvent event) throws Exception {
          this.addCargoEventHandler.handle(event);
     }
@@ -331,7 +353,7 @@ public class ViewImpl extends Observable implements View {
     //TODO IMPLEMENT PERSISTANCE HANDLER
     @Override
     public void handlePersistanceEvent(PersistanceEvent event) throws Exception {
-
+        persistanceEventHandler.handle(event);
     }
 
     @Override
@@ -346,32 +368,32 @@ public class ViewImpl extends Observable implements View {
 
     @Override
     public void addDeleteCustomerListener(DeleteCustomerListener listener) throws Exception {
-
+        deleteCustomerEventHandler.add(listener);
     }
 
     @Override
     public void addDeleteCargoListener(DeleteCargoListener listener) throws Exception {
-
+        deleteCargoEventHandler.add(listener);
     }
 
     @Override
     public void addInspectionListener(InspectionEventListener listener) throws Exception {
-
+        inspectionEventHandler.add(listener);
     }
 
     @Override
     public void addListCargoListener(ListCargoListener listener) throws Exception {
-
+        listCargoEventHandler.add(listener);
     }
 
     @Override
     public void addListCustomerListener(ListCustomerListener listener) throws Exception {
-
+        listCustomerEventHandler.add(listener);
     }
 
     @Override
-    public void addPersistanceListener(PersistanceListener listener) throws Exception {
-
+    public void addPersistanceListener(saveLoadListener listener) throws Exception {
+        persistanceEventHandler.add(listener);
     }
 
 

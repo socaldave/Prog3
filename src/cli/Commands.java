@@ -7,7 +7,6 @@ public class Commands {
     public static final String LIST_MODE = ":r";
     public static final String EDIT_MODE = ":u";
     public static final String PERS_MODE = ":p";
-    public static final String CONFIG_MODE = ":config";
     public static final String EXIT = "exit";
 
     // list mode options

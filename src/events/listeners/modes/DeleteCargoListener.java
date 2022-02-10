@@ -14,6 +14,13 @@ public class DeleteCargoListener {
     }
 
     public void onDeleteCargoEvent(DeleteCargoEvent event){
-        manager.removeCargo(event.getFachnummer());
+
+        boolean deleted = manager.removeCargo(event.getFachnummer());
+        if(deleted){
+            view.printRemoveCargo(event.getFachnummer());
+        }
+        else{
+            view.printInvalidCargoParams();
+        }
     }
 }

@@ -14,7 +14,14 @@ public class DeleteCustomerListener {
     }
 
     public void onDeleteCustomer(DeleteCustomerEvent event){
-        manager.customerManager.removeCustomerByName(event.getCustomerName());
+       boolean deleted = manager.customerManager.removeCustomerByName(event.getCustomerName());
+        if(deleted){
+            view.printRemoveCustomer(event.getCustomerName());
+        }
+         else{
+             view.printCustomerNontexistent(event.getCustomerName());
+        }
+
     }
 
 }
