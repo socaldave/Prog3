@@ -1,6 +1,5 @@
-import Simulations.ProducerUntimed;
-import Simulations.RandomConsumer;
-import Simulations.SyncConsumer;
+import Simulations.InspectionThread;
+import Simulations.OldestConsumer;
 import Simulations.Producer;
 import storageContract.administration.*;
 import storageContract.cargo.Cargo;
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class Simulation1 {
+public class Simulation3 {
 
     public static void main(String[] args) {
         CustomerManager customerStore = new CustomerManager(new ArrayList<Customer>());
@@ -29,20 +28,26 @@ public class Simulation1 {
         a1.changeSize(Integer.parseInt(args[0]));
 
         String name = "Producer 1";
+        String name2 = "Producer 2";
 
+        StorageManager v1 = new StorageManager(a1, customerStore);
 
-        StorageManager v1 = new StorageManager(a1,customerStore);
+        Object waitMonitor = new Object();
+        Object producentsWaitMonitor = new Object();
+        Object consumentsMonitor = new Object();
 
-        Thread einlagerung1 = new ProducerUntimed(v1, customerStore, name );
+        Thread producer = new Producer(v1, customerStore, name, waitMonitor, producentsWaitMonitor, consumentsMonitor);
+        Thread producer2 = new Producer(v1, customerStore, name2, waitMonitor, producentsWaitMonitor, consumentsMonitor);
 
-        Thread auslagerung1 = new RandomConsumer(v1,customerStore, "Consumer 1");
+        Thread inspector = new InspectionThread(v1, customerStore, waitMonitor, consumentsMonitor, "Inspector 1");
 
+        Thread consumer = new OldestConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
+        Thread consumer2 = new OldestConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 2");
 
-        einlagerung1.start();
-
-        auslagerung1.start();
-
-
+        producer.start();
+        consumer.start();
+        inspector.start();
+        producer2.start();
+        consumer2.start();
     }
-
 }

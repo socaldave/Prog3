@@ -29,14 +29,16 @@ public class StorageManager extends Observable implements Serializable {
 
     public synchronized boolean  addCargo(Cargo cargo) {
         try {
-            if (storage.add(cargo) != false) {
-                //cargo.setStorageNumber(store.size() - 1);
-                //cargo.setStorageNumber(getStorageNumber(cargo));
-                if (storage.size() == (storage.maxValue - this.capNotification)) {
-                    notifyObservers();
+            if(customerManager.checkIfCustomerExists(cargo.getOwner())){
+                if (storage.add(cargo) != false) {
+                    //cargo.setStorageNumber(store.size() - 1);
+                    //cargo.setStorageNumber(getStorageNumber(cargo));
+                    if (storage.size() == (storage.maxValue - this.capNotification)) {
+                        notifyObservers();
+                    }
+                    updateIndex();
+                    return true;
                 }
-                updateIndex();
-                return true;
             }
             return false;
         } catch (Exception e) {
@@ -54,6 +56,24 @@ public class StorageManager extends Observable implements Serializable {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public int returnOldestInspectionId() {
+        if(storage.size() != 0){
+            int index= 0;
+            Date oldest = storage.get(0).getLastInspectionDate();
+            for(int i = 1; i<storage.size(); i++){
+                if(storage.get(i)!= null){
+                    if(oldest.after(storage.get(i).getLastInspectionDate())){
+                        index = i;
+                        oldest = storage.get(i).getLastInspectionDate();
+                    }
+                }
+            }
+            return index;
+        }
+
+        else return -1;
     }
 
     public void updateIndex() {
@@ -83,38 +103,6 @@ public class StorageManager extends Observable implements Serializable {
         }
     }
 
-    public Cargo getOldestCargo() {
-        Cargo cargo = null;
-        int i = 0;
-        for (Cargo _cargo : this.storage) {
-            if (cargo == null) {
-                cargo = _cargo;
-            } else {
-                if (cargo.getDurationOfStorage().compareTo(_cargo.getDurationOfStorage()) > 0) {
-                    cargo = _cargo;
-                    i = this.storage.indexOf(_cargo);
-                }
-            }
-        }
-        return cargo;
-    }
-
-    public int getIndexOfOldestContent() {
-        Cargo cargo = null;
-        int i = -1;
-        for (Cargo _cargo : this.storage) {
-            if (cargo == null) {
-                cargo = _cargo;
-                i = this.storage.indexOf(_cargo);
-            } else {
-                if (cargo.getDurationOfStorage().compareTo(_cargo.getDurationOfStorage()) > 0) {
-                    cargo = _cargo;
-                    i = this.storage.indexOf(_cargo);
-                }
-            }
-        }
-        return i;
-    }
 
     public Storage<Cargo> getStorage() {
         return storage;
@@ -192,4 +180,6 @@ public class StorageManager extends Observable implements Serializable {
     public boolean resetContent(StorageManager management) {
         return this.setListContent(management.storage);
     }
+
+
 }

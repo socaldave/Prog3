@@ -72,7 +72,35 @@ public class Cli extends Application {
         view.addPersistanceListener(persistanceListener);
 
 
+
+
         Controller controller = new ControllerImpl(management, view);
+
+        //TODO This should be handled in the MAIN class to allow for configuration
+        //modes:
+        InitListener activeMode = new InitListener(view, management);
+        AddModeListener addModeListener = new AddModeListener(management, view);
+        DeleteListener deleteListener = new DeleteListener(management, view);
+        ListListener listListener = new ListListener(management, view);
+        PersistanceListener loadModelistener = new PersistanceListener(management, view);
+        EditListener editListener = new EditListener(management, view);
+
+
+        // listen to view
+        view.addInputEventListener(activeMode);
+        //view.addInputEventListener(addModeListener);
+        view.addInputEventListener(deleteListener);
+        //view.addInputEventListener(listListener);
+        view.addInputEventListener(loadModelistener);
+
+        //view.addInputEventListener(editListener);
+        //messages:
+        AddCargoListener addEventListenerCargo = new AddCargoListener(view);
+
+        events.listeners.messages.AddCustomerListener addEventListenerCustomer = new events.listeners.messages.AddCustomerListener(view);
+        // listen to view
+        view.addNewElementEventListener(addEventListenerCargo);
+        view.addNewElementEventListener(addEventListenerCustomer);
 
         if (cap != null) management.storage.changeSize(cap);
         view.initView();

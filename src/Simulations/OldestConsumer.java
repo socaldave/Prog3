@@ -4,16 +4,18 @@ import storageContract.administration.CustomerManager;
 import storageContract.administration.StorageManager;
 import storageContract.cargo.Cargo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class SyncConsumer extends Thread {
+public class OldestConsumer extends Thread {
+
     private Object waitMonitor;
     private Object consumerMoniter;
     private StorageManager manager;
     private CustomerManager customerStore;
     private String name;
 
-    public SyncConsumer(StorageManager manager, CustomerManager customerStore, Object waitMonitor, Object consumerMonitor, String threadName){
+    public OldestConsumer(StorageManager manager, CustomerManager customerStore, Object waitMonitor, Object consumerMonitor, String threadName){
         this.waitMonitor = waitMonitor;
         this.consumerMoniter = consumerMonitor;
         this.manager = manager;
@@ -30,12 +32,13 @@ public class SyncConsumer extends Thread {
                         consumerMoniter.wait();
                     } else {
                         Random random = new Random();
-                        Integer cargoSpot = (int)(Math.random() * manager.storage.size());
+                        Integer cargoSpot = manager.returnOldestInspectionId();
                         System.out.println("Deleting Cargo : " + manager.storage.get(cargoSpot).toString());
-                        Cargo cargo = manager.storage.get(cargoSpot);
+
                         manager.removeCargo(cargoSpot);
 
-                        synchronized(waitMonitor) {waitMonitor.notify();}
+
+                        synchronized(waitMonitor) { waitMonitor.notify();  }
 
                     }
                 }

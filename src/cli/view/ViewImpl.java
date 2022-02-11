@@ -8,8 +8,8 @@ import events.listeners.messages.AddEventListener;
 import events.listeners.modes.*;
 import network.tcp.TcpClient;
 import network.udp.UdpClient;
-import saveLoad.jbp.JDP_Save_Load;
-import saveLoad.jdp.JOS_Save_Load;
+import saveLoad.JDP.JDP_Save_Load;
+import saveLoad.JOS.JOS_Save_Load;
 import storageContract.administration.Customer;
 
 import storageContract.administration.StorageManager;
@@ -173,6 +173,11 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
+    public void printAddedCustomerObserver() {
+        ps.println("customer added... Notification triggered through observer" );
+    }
+
+    @Override
     public void printUnsupportCommand() {
         ps.println("Unsupported mode");
     }
@@ -182,7 +187,7 @@ public class ViewImpl extends Observable implements View {
         ps.println("Low capacity, just " + capacityProcentRest + " free");
     }
 
-    //Todo Implement
+
     @Override
     public void printInvalidType() {
         ps.println("# Invalid Type entered");
@@ -194,7 +199,7 @@ public class ViewImpl extends Observable implements View {
         ps.println("# Returning to Main Menu.... ");
     }
 
-    //TODO
+
     @Override
     public void printCargoAdded() {
         ps.println("# Sucessfully added Cargo");
@@ -315,6 +320,8 @@ public class ViewImpl extends Observable implements View {
         this.persistanceEventHandler = persistanceEventHandler;
     }
 
+
+
     @Override
     public void handleAddCargoEvent(AddCargoEvent event) throws Exception {
          this.addCargoEventHandler.handle(event);
@@ -350,7 +357,7 @@ public class ViewImpl extends Observable implements View {
         this.listCustomerEventHandler.handle(event);
     }
 
-    //TODO IMPLEMENT PERSISTANCE HANDLER
+
     @Override
     public void handlePersistanceEvent(PersistanceEvent event) throws Exception {
         persistanceEventHandler.handle(event);

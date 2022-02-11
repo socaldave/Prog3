@@ -63,7 +63,7 @@ public interface View {
     void setListCargoEventHandler(ListCargoEventHandler inputEvent) throws Exception;
     void setListCustomerHandler(ListCustomerEventHandler inputEvent) throws Exception;
     void setPersistanceHander(PersistanceEventHandler persistanceEventHandler) throws Exception;
-
+    void printAddedCustomerObserver();
 
 
 

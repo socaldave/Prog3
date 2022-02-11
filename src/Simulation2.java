@@ -1,4 +1,5 @@
 import Simulations.InspectionThread;
+import Simulations.OldestConsumer;
 import Simulations.Producer;
 import Simulations.SyncConsumer;
 import storageContract.administration.*;
@@ -37,7 +38,7 @@ public class Simulation2 {
 
         Thread producer = new Producer(v1, customerStore, name, waitMonitor, producentsWaitMonitor, consumentsMonitor);
         Thread inspector = new InspectionThread(v1, customerStore, waitMonitor, consumentsMonitor, "Inspector 1");
-        Thread consumer = new SyncConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
+        Thread consumer = new OldestConsumer(v1,customerStore,waitMonitor, consumentsMonitor, "Consumer 1");
 
         producer.start();
         consumer.start();

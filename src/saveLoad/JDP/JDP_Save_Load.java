@@ -1,4 +1,4 @@
-package saveLoad.jbp;
+package saveLoad.JDP;
 
 import saveLoad.SaveLoadInterface;
 import storageContract.administration.CustomerManager;

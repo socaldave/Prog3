@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class Gui extends Application {
+
+
+    @Override
     public void start(Stage primaryStage) throws Exception {
         //Found file test:
         URL filelink = getClass().getResource("gui/main.fxml");
@@ -30,23 +33,4 @@ public class Gui extends Application {
         primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.show();
     }
-
-    public static void main(String[] args) throws Exception {
-        Server server = null;
-
-        if(args != null){
-            String netType = args[0];
-            int capacity = Integer.parseInt(args[1]);
-            if(args[0].toLowerCase(Locale.ROOT).equals("tcp")){
-                server = new Server("tcp",capacity);
-            } else if(args[0].toLowerCase(Locale.ROOT).equals("udp")){
-                server = new Server("udp",capacity);
-
-            }
-            server.run();
-        } else System.out.println("Please provide args for start. args[0] = network type , args[1] = capacity");
-    }
-
-
-
 }

@@ -25,7 +25,8 @@ public class Storage<E> extends ArrayList<E> {
     }
 
     public void changeSize(Integer cap) {
-        this.maxValue = cap;
+        if(cap > 0)
+            this.maxValue = cap;
     }
 
     public boolean isFull(){
