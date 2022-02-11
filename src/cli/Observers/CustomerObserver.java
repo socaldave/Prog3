@@ -21,6 +21,6 @@ public class CustomerObserver implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        view.print
+        view.printAddedCustomerObserver();
     }
 }
