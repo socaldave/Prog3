@@ -3,6 +3,7 @@ import cli.Controller.ControllerImpl;
 import cli.view.View;
 import cli.view.ViewImpl;
 import events.handlers.*;
+import events.listeners.messages.AddCargoListener;
 import events.listeners.modes.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -41,8 +42,7 @@ public class AltCli  extends Application {
         view.setListCargoEventHandler(listCargoEventHandler);
         view.setDeleteCargoHandler(deleteCargoEventHandler);
         view.setDeleteCustomerHandler(deleteCustomerEventHandler);
-       // view.setInspectionHandler(inspectionEventHandler);
-       // view.setPersistanceHander(persistanceEventHandler);
+
 
 
 
@@ -53,9 +53,6 @@ public class AltCli  extends Application {
         ListCustomerListener listCustomerListener = new ListCustomerListener(management, view);
         DeleteCargoListener deleteCargoListener = new DeleteCargoListener(management, view);
         DeleteCustomerListener deleteCustomerListener = new DeleteCustomerListener(management, view);
-      //  saveLoadListener persistanceListener = new saveLoadListener(management, view);
-       // InspectionEventListener inspectionEventListener = new InspectionEventListener(management , view);
-
 
 
         view.addAddCustomerListener(addCustomerListener);
@@ -64,11 +61,33 @@ public class AltCli  extends Application {
         view.addListCustomerListener(listCustomerListener);
         view.addDeleteCargoListener(deleteCargoListener);
         view.addDeleteCustomerListener(deleteCustomerListener);
-     //   view.addInspectionListener(inspectionEventListener);
-      //  view.addPersistanceListener(persistanceListener);
+
 
 
         Controller controller = new ControllerImpl(management, view);
+
+        InitListener inputEventListenerActiveMode = new InitListener(view, management);
+        AddModeListener inputEventListenerAddMode = new AddModeListener(management, view);
+        DeleteListener inputEventListenerDeleteMode = new DeleteListener(management, view);
+        ListListener inputEventListenerListMode = new ListListener(management, view);
+
+
+        // listen to view
+        view.addInputEventListener(inputEventListenerActiveMode);
+        view.addInputEventListener(inputEventListenerAddMode);
+        view.addInputEventListener(inputEventListenerDeleteMode);
+        view.addInputEventListener(inputEventListenerListMode);
+
+
+
+        //messages:
+        AddCargoListener addEventListenerCargo = new AddCargoListener(view);
+        events.listeners.messages.AddCustomerListener addEventListenerCustomer = new events.listeners.messages.AddCustomerListener(view);
+        // listen to view
+        view.addNewElementEventListener(addEventListenerCargo);
+        view.addNewElementEventListener(addEventListenerCustomer);
+
+
 
         if (cap != null) management.storage.changeSize(cap);
         view.initView();

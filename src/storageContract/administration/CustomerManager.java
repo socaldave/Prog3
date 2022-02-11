@@ -1,10 +1,12 @@
 package storageContract.administration;
 
+import ObservablePattern.Observable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerManager implements Serializable {
+public class CustomerManager extends Observable implements Serializable {
     private ArrayList<Customer> customers;
     private Integer id = 0;
 
@@ -39,6 +41,7 @@ public class CustomerManager implements Serializable {
             customers.add(c);
             c.setId(this.id);
             this.id++;
+            notifyObservers();
             return true;
         } else {
             return false;

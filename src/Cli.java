@@ -1,8 +1,11 @@
 import cli.Controller.Controller;
 import cli.Controller.ControllerImpl;
+import cli.Observers.CapacityObserver;
+import cli.Observers.CustomerObserver;
 import cli.view.View;
 import cli.view.ViewImpl;
 import events.handlers.*;
+import events.listeners.messages.AddCargoListener;
 import events.listeners.modes.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,6 +21,12 @@ public class Cli extends Application {
         CustomerManager customers = new CustomerManager(new ArrayList<>());
         StorageManager management = new StorageManager(customers);
         View view = new ViewImpl(System.in, System.out);
+
+        CapacityObserver capacityObserver = new CapacityObserver(management, view);
+        CustomerObserver customerObserver = new CustomerObserver(management, view);
+
+        management.addObserver(capacityObserver);
+        management.customerManager.addObserver(customerObserver);
 
 
         InputEventHandler inputEventHandler = new InputEventHandler();
@@ -66,6 +75,31 @@ public class Cli extends Application {
         view.addPersistanceListener(persistanceListener);
 
         Controller controller = new ControllerImpl(management, view);
+
+
+
+        InitListener inputEventListenerActiveMode = new InitListener(view, management);
+        AddModeListener inputEventListenerAddMode = new AddModeListener(management, view);
+        DeleteListener inputEventListenerDeleteMode = new DeleteListener(management, view);
+        ListListener inputEventListenerListMode = new ListListener(management, view);
+        PersistanceListener inputEventListenerPersistenceMode = new PersistanceListener(management, view);
+        EditListener inputEventListenerEditMode = new EditListener(management, view);
+
+        // listen to view
+        view.addInputEventListener(inputEventListenerActiveMode);
+        view.addInputEventListener(inputEventListenerAddMode);
+        view.addInputEventListener(inputEventListenerDeleteMode);
+        view.addInputEventListener(inputEventListenerListMode);
+        view.addInputEventListener(inputEventListenerPersistenceMode);
+
+        view.addInputEventListener(inputEventListenerEditMode);
+        //messages:
+        AddCargoListener addEventListenerCargo = new AddCargoListener(view);
+        events.listeners.messages.AddCustomerListener addEventListenerCustomer = new events.listeners.messages.AddCustomerListener(view);
+        // listen to view
+        view.addNewElementEventListener(addEventListenerCargo);
+        view.addNewElementEventListener(addEventListenerCustomer);
+
 
         if (cap != null) management.storage.changeSize(cap);
         view.initView();

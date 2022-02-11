@@ -1,12 +1,10 @@
 package cli.Observers;
 
 
+import ObservablePattern.Observer;
 import cli.view.View;
 import storageContract.administration.StorageManager;
 import storageContract.cargo.Cargo;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class CapacityObserver implements Observer {
 
@@ -21,7 +19,7 @@ public class CapacityObserver implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update() {
         view.printLowCapacity(this.manager.capNotification);
     }
 }

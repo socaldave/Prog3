@@ -1,11 +1,11 @@
 package storageContract.administration;
 
+import ObservablePattern.Observable;
 import storageContract.cargo.Cargo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Observable;
 
 public class StorageManager extends Observable implements Serializable {
     public CustomerManager customerManager;
