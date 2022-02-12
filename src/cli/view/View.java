@@ -77,6 +77,7 @@ public interface View {
     void handleListCargoEvent(ListCargoEvent event) throws Exception;
     void handleListCustomerEvent(ListCustomerEvent event) throws Exception;
     void handlePersistanceEvent(PersistanceEvent event) throws Exception;
+    void handleListHazardEvent(ListHazardsEvent event) throws Exception;
 
     void addAddCargoListener(AddingCargoListener listener) throws Exception;
     void addAddCustomerListener(AddCustomerListener listener) throws Exception;
@@ -139,4 +140,15 @@ public interface View {
     void save(StorageManager management, int position);
 
     void setNetwork(boolean tcp, boolean udp, StorageManager management);
+
+    void listContainedHazards(StorageManager manager);
+
+    void setListHazardsEventHandler(ListHazardsEventHandler listHazardsEventHandler);
+
+    void addListHazardsListener(ListHazardListener listHazardListener);
+
+    //TODO Implement
+    void printNotContainedHazards();
+
+    void invalidHazardsParam();
 }

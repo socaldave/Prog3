@@ -4,6 +4,7 @@ import cli.Commands;
 import cli.view.View;
 import events.events.ListCargoEvent;
 import events.events.ListCustomerEvent;
+import events.events.ListHazardsEvent;
 import storageContract.administration.StorageManager;
 
 import java.util.StringTokenizer;
@@ -45,12 +46,13 @@ public class ListListener implements InputEventListener {
                 }
                 break;
                 case Commands.HAZARD: {
-                    try{
-                        this.doListHazards();
-                    } catch (Exception e){
-                        System.out.println(e.getMessage());
+                    if(tokenizer.hasMoreTokens()){
+                        ListHazardsEvent hazardsEvent = new ListHazardsEvent(tokenizer.nextToken());
+                        view.handleListHazardEvent(hazardsEvent);
+                        System.out.println(tokenizer.nextToken());
+                    } else {
+                       view.invalidHazardsParam();
                     }
-
                 }
                 break;
                 default:

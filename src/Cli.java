@@ -26,7 +26,7 @@ public class Cli extends Application {
         CustomerObserver customerObserver = new CustomerObserver(management, view);
 
         management.addObserver(capacityObserver);
-        management.customerManager.addObserver(customerObserver);
+       // management.customerManager.addObserver(customerObserver);
 
 
         InputEventHandler inputEventHandler = new InputEventHandler();
@@ -40,6 +40,7 @@ public class Cli extends Application {
         DeleteCargoEventHandler deleteCargoEventHandler = new DeleteCargoEventHandler();
         InspectionEventHandler inspectionEventHandler = new InspectionEventHandler();
         PersistanceEventHandler persistanceEventHandler = new PersistanceEventHandler();
+        ListHazardsEventHandler listHazardsEventHandler = new ListHazardsEventHandler();
 
         //set Command Handlers
         view.setInputEventHandler(inputEventHandler);
@@ -54,6 +55,7 @@ public class Cli extends Application {
         view.setDeleteCustomerHandler(deleteCustomerEventHandler);
         view.setInspectionHandler(inspectionEventHandler);
         view.setPersistanceHander(persistanceEventHandler);
+        view.setListHazardsEventHandler(listHazardsEventHandler);
 
         //Listeners
         AddCustomerListener addCustomerListener = new AddCustomerListener(management, view);
@@ -64,6 +66,8 @@ public class Cli extends Application {
         DeleteCustomerListener deleteCustomerListener = new DeleteCustomerListener(management, view);
         saveLoadListener persistanceListener = new saveLoadListener(management, view);
         InspectionEventListener inspectionEventListener = new InspectionEventListener(management , view);
+        ListHazardListener listHazardListener = new ListHazardListener(management, view);
+
 
         view.addAddCustomerListener(addCustomerListener);
         view.addAddCargoListener(addCargoListener);
@@ -73,6 +77,7 @@ public class Cli extends Application {
         view.addDeleteCustomerListener(deleteCustomerListener);
         view.addInspectionListener(inspectionEventListener);
         view.addPersistanceListener(persistanceListener);
+        view.addListHazardsListener(listHazardListener);
 
         Controller controller = new ControllerImpl(management, view);
 

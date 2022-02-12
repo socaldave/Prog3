@@ -14,6 +14,7 @@ import storageContract.administration.Customer;
 
 import storageContract.administration.StorageManager;
 import storageContract.cargo.Cargo;
+import storageContract.cargo.Hazard;
 
 import java.io.*;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class ViewImpl extends Observable implements View {
     ListCargoEventHandler listCargoEventHandler;
     ListCustomerEventHandler listCustomerEventHandler;
     PersistanceEventHandler persistanceEventHandler;
+    ListHazardsEventHandler listHazardsEventHandler;
 
 
 
@@ -364,6 +366,11 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
+    public void handleListHazardEvent(ListHazardsEvent event) throws Exception {
+        listHazardsEventHandler.handle(event);
+    }
+
+    @Override
     public void addAddCargoListener(AddingCargoListener listener) throws Exception {
         addCargoEventHandler.add(listener);
     }
@@ -570,6 +577,14 @@ public class ViewImpl extends Observable implements View {
     }
 
     @Override
+    public void listContainedHazards(StorageManager manager) {
+        System.out.println("Contained Hazard/s: ");
+        for(Hazard hazard : manager.containedHazards){
+            System.out.println(hazard.toString());
+        }
+    }
+
+    @Override
     public void saveJDB(StorageManager management) {
 
         jdb = new JDP_Save_Load(management.customerManager);
@@ -618,7 +633,32 @@ public class ViewImpl extends Observable implements View {
 
     public void setAddCustomerEventHandler(AddCustomerEventHandler addCustomerEventHandler) {
         this.addCustomerEventHandler = addCustomerEventHandler;
+
     }
 
+    @Override
+    public void setListHazardsEventHandler(ListHazardsEventHandler listHazardsEventHandler) {
+        this.listHazardsEventHandler = listHazardsEventHandler;
+    }
 
+    @Override
+    public void addListHazardsListener(ListHazardListener listHazardListener) {
+        if(listHazardsEventHandler != null)
+            listHazardsEventHandler.add(listHazardListener);
+    }
+
+    //TODO Implement
+    @Override
+    public void printNotContainedHazards() {
+
+    }
+
+    @Override
+    public void invalidHazardsParam() {
+        ps.println("#Invalid Hazard Params. Please enter  (i) for contained and (E) for not contained");
+    }
+
+    public ListHazardsEventHandler getListHazardsEventHandler() {
+        return listHazardsEventHandler;
+    }
 }

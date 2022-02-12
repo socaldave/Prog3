@@ -2,15 +2,18 @@ package storageContract.administration;
 
 import ObservablePattern.Observable;
 import storageContract.cargo.Cargo;
+import storageContract.cargo.Hazard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class StorageManager extends Observable implements Serializable {
     public CustomerManager customerManager;
     public Storage<Cargo> storage;
     public int capNotification = 1;
+    public List<Hazard>  containedHazards = new ArrayList<>();
 
     public StorageManager() {
         this.storage = new Storage<>();
@@ -31,8 +34,12 @@ public class StorageManager extends Observable implements Serializable {
         try {
             if(customerManager.checkIfCustomerExists(cargo.getOwner())){
                 if (storage.add(cargo) != false) {
-                    //cargo.setStorageNumber(store.size() - 1);
-                    //cargo.setStorageNumber(getStorageNumber(cargo));
+                    for(Hazard hazard : cargo.getHazards()){
+                       if(!containedHazards.contains(hazard)){
+                           containedHazards.add(hazard);
+                           //TODO add Hazards Observer Notification
+                       }
+                    }
                     if (storage.size() == (storage.maxValue - this.capNotification)) {
                         notifyObservers();
                     }
