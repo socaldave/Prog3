@@ -1,7 +1,7 @@
 import cli.Controller.Controller;
 import cli.Controller.ControllerImpl;
 import cli.Observers.CapacityObserver;
-import cli.Observers.CustomerObserver;
+import cli.Observers.HazardObserver;
 import cli.view.View;
 import cli.view.ViewImpl;
 import events.handlers.*;
@@ -22,11 +22,11 @@ public class Cli extends Application {
         StorageManager management = new StorageManager(customers);
         View view = new ViewImpl(System.in, System.out);
 
+        HazardObserver hazardObserver = new HazardObserver(management, view);
         CapacityObserver capacityObserver = new CapacityObserver(management, view);
-        CustomerObserver customerObserver = new CustomerObserver(management, view);
 
-        management.addObserver(capacityObserver);
-       // management.customerManager.addObserver(customerObserver);
+        management.addCapacityObserver(capacityObserver);
+        management.addHazardObserver(hazardObserver);
 
 
         InputEventHandler inputEventHandler = new InputEventHandler();

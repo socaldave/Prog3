@@ -1,19 +1,10 @@
 package events.listeners.modes;
 
-import cli.Commands;
 import cli.view.View;
 import events.events.AddCargoEvent;
 import events.listeners.messages.AddEvent;
-import storageContract.administration.Customer;
-import storageContract.administration.CustomerImpl;
 import storageContract.administration.StorageManager;
 import storageContract.cargo.*;
-
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 public class AddingCargoListener {
     private StorageManager storageManager;
@@ -41,6 +32,11 @@ public class AddingCargoListener {
 
                 case "unitisedcargo": {
                     cargo = new UnitisedCargoImpl(this.storageManager.customerManager.getCustomerWithName(event.getCustomerName()), event.getValue(), event.getDuration(), event.getHazards(), event.getPressurized(), event.getFragile());
+                }
+                break;
+
+                case "liquidbulkandunitisedcargo":{
+                    cargo = new LiquidBulkAndUnitisedCargoImpl(this.storageManager.customerManager.getCustomerWithName(event.getCustomerName()), event.getValue(), event.getDuration(), event.getHazards(), event.getPressurized(), event.getFragile());
                 }
                 break;
             }

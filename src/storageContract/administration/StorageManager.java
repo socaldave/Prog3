@@ -1,12 +1,18 @@
 package storageContract.administration;
 
 import ObservablePattern.Observable;
+import ObservablePattern.Observer;
+import cli.Observers.CapacityObservable;
+import cli.Observers.CapacityObserver;
+import cli.Observers.HazardObserver;
+import cli.Observers.NewHazardObserverable;
 import storageContract.cargo.Cargo;
 import storageContract.cargo.Hazard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StorageManager extends Observable implements Serializable {
@@ -14,6 +20,9 @@ public class StorageManager extends Observable implements Serializable {
     public Storage<Cargo> storage;
     public int capNotification = 1;
     public List<Hazard>  containedHazards = new ArrayList<>();
+
+    private NewHazardObserverable  newHazardObserverable= new NewHazardObserverable(new LinkedList<Observer>());
+    private CapacityObservable capacityObservable= new CapacityObservable(new LinkedList<Observer>());
 
     public StorageManager() {
         this.storage = new Storage<>();
@@ -37,11 +46,12 @@ public class StorageManager extends Observable implements Serializable {
                     for(Hazard hazard : cargo.getHazards()){
                        if(!containedHazards.contains(hazard)){
                            containedHazards.add(hazard);
-                           //TODO add Hazards Observer Notification
+                           newHazardObserverable.notifyObservers();
                        }
                     }
                     if (storage.size() == (storage.maxValue - this.capNotification)) {
-                        notifyObservers();
+                        //notifyObservers();
+                        capacityObservable.notifyObservers();
                     }
                     updateIndex();
                     return true;
@@ -100,6 +110,14 @@ public class StorageManager extends Observable implements Serializable {
             Cargo c = this.storage.get(i);
             System.out.println("store number: " + i + " | owner: " + c.getOwner().getName() + " | store duration (min): " + c.getDurationOfStorage().getSeconds() / 60 + " | last inspecting date: " + c.getLastInspectionDate().toString());
         }
+    }
+
+    public void addHazardObserver(HazardObserver hazardObserver){
+        newHazardObserverable.addObserver(hazardObserver);
+    }
+
+    public void addCapacityObserver(CapacityObserver CapacityObserver){
+        capacityObservable.addObserver(CapacityObserver);
     }
 
     public int getCurrentStorageCapacity() {

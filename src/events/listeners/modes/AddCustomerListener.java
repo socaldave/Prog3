@@ -5,7 +5,6 @@ import events.events.AddCustomerEvent;
 import events.listeners.messages.AddEvent;
 import storageContract.administration.Customer;
 import storageContract.administration.CustomerImpl;
-import storageContract.administration.Storage;
 import storageContract.administration.StorageManager;
 
 import java.math.BigDecimal;
@@ -25,7 +24,7 @@ public class AddCustomerListener {
         if (this.storageManager.customerManager.add(customer)) {
             AddEvent addEvent = new AddEvent(this.view, customer);
             this.view.handleAddEvent(addEvent);
-            view.printCustomerAdded(event.getCustomerName());
+            view.printAddCustomer(customer);
         } else
             this.view.printUnsupportCommand();
     }

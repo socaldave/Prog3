@@ -242,7 +242,9 @@ public class ViewImpl extends Observable implements View {
                 ps.println("# id: " + _cargo.getStorageNumber()
                         + " | type: " + _cargo.getType()
                         + " | value: " + _cargo.getValue()
-                        + " | storage date: " + _cargo.getStorageDate().toString());
+                        + " | Inspection Date : " + _cargo.getLastInspectionDate()
+                        + " | storage date: " + _cargo.getStorageDate().toString()
+                        +" | Hazards date: " +_cargo.getHazards());
             }
         }
     }
@@ -255,7 +257,10 @@ public class ViewImpl extends Observable implements View {
                 ps.println("# id: " + _cargo.getStorageNumber()
                         + " | type: " + _cargo.getType()
                         + " | value: " + _cargo.getValue()
-                        + " | storage date: " + _cargo.getStorageDate().toString());
+                        + " | storage date: " + _cargo.getStorageDate().toString()
+                        + " | Inspection Date : " + _cargo.getLastInspectionDate()
+                         +" | Hazards date: " +_cargo.getHazards());
+
             }
         }
     }
@@ -656,6 +661,11 @@ public class ViewImpl extends Observable implements View {
     @Override
     public void invalidHazardsParam() {
         ps.println("#Invalid Hazard Params. Please enter  (i) for contained and (E) for not contained");
+    }
+
+    @Override
+    public void printNewHazardAdded() {
+        ps.println("New Hazard added to the storage");
     }
 
     public ListHazardsEventHandler getListHazardsEventHandler() {

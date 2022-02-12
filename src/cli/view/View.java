@@ -151,4 +151,6 @@ public interface View {
     void printNotContainedHazards();
 
     void invalidHazardsParam();
+
+    void printNewHazardAdded();
 }
